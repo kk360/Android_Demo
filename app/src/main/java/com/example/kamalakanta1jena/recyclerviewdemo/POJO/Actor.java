@@ -1,4 +1,4 @@
-package com.example.kamalakanta1jena.recyclerviewdemo;
+package com.example.kamalakanta1jena.recyclerviewdemo.POJO;
 
 /**
  * Created by Kamalakanta1.Jena on 19-06-2017.
@@ -9,29 +9,13 @@ import com.google.gson.annotations.SerializedName;
 
 public class Actor {
 
-    @SerializedName("name")
-    @Expose
     private String name;
-    @SerializedName("description")
-    @Expose
     private String description;
-    @SerializedName("dob")
-    @Expose
     private String dob;
-    @SerializedName("country")
-    @Expose
     private String country;
-    @SerializedName("height")
-    @Expose
     private String height;
-    @SerializedName("spouse")
-    @Expose
     private String spouse;
-    @SerializedName("children")
-    @Expose
     private String children;
-    @SerializedName("image")
-    @Expose
     private String image;
 
     public String getName() {

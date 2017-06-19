@@ -1,14 +1,11 @@
 package com.example.kamalakanta1jena.recyclerviewdemo;
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
+import android.util.Log;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -25,13 +22,19 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.example.kamalakanta1jena.recyclerviewdemo.Adapter.MovieRVAdapter;
+import com.example.kamalakanta1jena.recyclerviewdemo.Retrofit.APIInterface;
+import com.example.kamalakanta1jena.recyclerviewdemo.POJO.Actor;
+import com.example.kamalakanta1jena.recyclerviewdemo.POJO.Movie;
+import com.example.kamalakanta1jena.recyclerviewdemo.Retrofit.retrofitApiClient;
+import com.example.kamalakanta1jena.recyclerviewdemo.Settings.SettingsActivity;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -44,7 +47,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     //http://microblogging.wingnity.com/JSONParsingTutorial/jsonActors
     private static final String URL = "http://microblogging.wingnity.com/JSONParsingTutorial/jsonActors";
 
-    private List<Movie> movieList;
+    private List<Actor> movieList;
     APIInterface apiInterface;
 
     @Override
@@ -70,12 +73,40 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         movieList = new ArrayList<>();
 
-        apiInterface = APIClient.getClient().create(APIInterface.class);
+        loaddataviaRetrofit();
 
-        //loadRecyclerViewData(this);
+        //loadRecyclerViewDataviaVolley();
     }
 
-    /*private void loadRecyclerViewData(final Context context) {
+    private void loaddataviaRetrofit(){
+        final ProgressDialog progressDialog = new ProgressDialog(MainActivity.this);
+        progressDialog.setMessage("Loading...");
+        progressDialog.show();
+        APIInterface apiInterface = retrofitApiClient.getClient().create(APIInterface.class);
+
+        Call<Movie> call = apiInterface.getActorData();
+        call.enqueue(new Callback<Movie>() {
+            @Override
+            public void onResponse(Call<Movie> call, retrofit2.Response<Movie> response) {
+
+                List<Actor> actors =  response.body().getActors();
+                Log.d("TEST", "Number of movies received: " + actors.size());
+                progressDialog.dismiss();
+                adapter = new MovieRVAdapter(actors, MainActivity.this);
+                recyclerView.setAdapter(adapter);
+            }
+
+            @Override
+            public void onFailure(Call<Movie> call, Throwable t) {
+                progressDialog.dismiss();
+                Toast.makeText(MainActivity.this,"Error Occured please try again!!!",Toast.LENGTH_SHORT).show();
+                Log.e("TEST", t.toString());
+            }
+        });
+
+    }
+
+    private void loadRecyclerViewDataviaVolley() {
         final ProgressDialog progressDialog = new ProgressDialog(MainActivity.this);
         progressDialog.setMessage("Loading...");
         progressDialog.show();
@@ -87,7 +118,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     public void onResponse(String response) {
                         progressDialog.dismiss();
                         try {
-                            JSONObject jsonObject = new JSONObject(response);
+                            Gson gson=new Gson();
+
+                            Movie m = gson.fromJson(response.toString(),Movie.class);
+                            movieList = m.getActors();
+                            /*JSONObject jsonObject = new JSONObject(response);
                             JSONArray jsonArray = jsonObject.getJSONArray("actors");
 
                             for(int i=0; i<jsonArray.length(); i++){
@@ -97,12 +132,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                         jsonObject1.getString("dob"),
                                         jsonObject1.getString("image")
                                 );
-                                movieList.add(movie);
-                            }
-                            adapter = new MovieAdapter(movieList, MainActivity.this);
+                                movieList.add(actor);
+                            }*/
+                            adapter = new MovieRVAdapter(movieList, MainActivity.this);
                             recyclerView.setAdapter(adapter);
 
-                        } catch (JSONException e) {
+                        } catch (Exception e) {
                             e.printStackTrace();
                         }
                     }
@@ -111,12 +146,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         progressDialog.dismiss();
-                        Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Error Occured please try again!!!", Toast.LENGTH_SHORT).show();
                     }
                 });
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(stringRequest);
-    }*/
+    }
 
     @Override
     public void onBackPressed() {

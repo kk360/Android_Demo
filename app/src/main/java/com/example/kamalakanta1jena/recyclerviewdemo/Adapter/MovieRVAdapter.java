@@ -1,7 +1,10 @@
-package com.example.kamalakanta1jena.recyclerviewdemo;
+package com.example.kamalakanta1jena.recyclerviewdemo.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.ProviderInfo;
 import android.support.v7.widget.RecyclerView;
+import android.telecom.Call;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,21 +13,26 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.kamalakanta1jena.recyclerviewdemo.Deatils;
+import com.example.kamalakanta1jena.recyclerviewdemo.MainActivity;
+import com.example.kamalakanta1jena.recyclerviewdemo.POJO.Actor;
+import com.example.kamalakanta1jena.recyclerviewdemo.R;
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by Kamalakanta1.Jena on 15-06-2017.
  */
 
-public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> {
+public class MovieRVAdapter extends RecyclerView.Adapter<MovieRVAdapter.ViewHolder> {
 
     private List<Actor> movieList;
     private Context context;
 
-    public MovieAdapter(List<Actor> movieList, Context context){
+    private String intentitem = "RV_item";
+
+    public MovieRVAdapter(List<Actor> movieList, Context context){
         this.movieList = movieList;
         this.context = context;
     }
@@ -43,14 +51,14 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
     }
 
     @Override
-    public MovieAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public MovieRVAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.rv_item, parent, false);
         ViewHolder viewHolder = new ViewHolder(view);
         return viewHolder;
     }
 
     @Override
-    public void onBindViewHolder(MovieAdapter.ViewHolder holder, final int position) {
+    public void onBindViewHolder(MovieRVAdapter.ViewHolder holder, final int position) {
         holder.tvTitle.setText(movieList.get(position).getName());
         holder.tvDesc.setText(movieList.get(position).getDob());
 
@@ -60,6 +68,9 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
             @Override
             public void onClick(View view) {
                 Toast.makeText(context, "Clicked at: " + position, Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(context, Deatils.class);
+
+                context.startActivity(intent);
             }
         });
     }

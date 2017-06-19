@@ -17,7 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/rv"
-        android:scrollbars="vertical"
+        android:scrollbars="none"
         android:fadeScrollbars="true">
     </android.support.v7.widget.RecyclerView>
 </RelativeLayout>

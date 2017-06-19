@@ -1,4 +1,4 @@
-package com.example.kamalakanta1jena.recyclerviewdemo;
+package com.example.kamalakanta1jena.recyclerviewdemo.Settings;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
