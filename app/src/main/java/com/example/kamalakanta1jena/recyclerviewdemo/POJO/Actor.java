@@ -7,7 +7,9 @@ package com.example.kamalakanta1jena.recyclerviewdemo.POJO;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Actor {
+import java.io.Serializable;
+
+public class Actor implements Serializable{
 
     private String name;
     private String description;

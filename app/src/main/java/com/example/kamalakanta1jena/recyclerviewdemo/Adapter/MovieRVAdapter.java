@@ -1,5 +1,6 @@
 package com.example.kamalakanta1jena.recyclerviewdemo.Adapter;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ProviderInfo;
@@ -17,8 +18,10 @@ import com.example.kamalakanta1jena.recyclerviewdemo.Deatils;
 import com.example.kamalakanta1jena.recyclerviewdemo.MainActivity;
 import com.example.kamalakanta1jena.recyclerviewdemo.POJO.Actor;
 import com.example.kamalakanta1jena.recyclerviewdemo.R;
+import com.example.kamalakanta1jena.recyclerviewdemo.Utils.RoundedImageView;
 import com.squareup.picasso.Picasso;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -29,6 +32,9 @@ public class MovieRVAdapter extends RecyclerView.Adapter<MovieRVAdapter.ViewHold
 
     private List<Actor> movieList;
     private Context context;
+
+    private TextView tvname,tvcountry,tvheight,tvdesc;
+    private ImageView ivimage;
 
     private String intentitem = "RV_item";
 
@@ -62,15 +68,34 @@ public class MovieRVAdapter extends RecyclerView.Adapter<MovieRVAdapter.ViewHold
         holder.tvTitle.setText(movieList.get(position).getName());
         holder.tvDesc.setText(movieList.get(position).getDob());
 
-        Picasso.with(context).load(movieList.get(position).getImage()).into(holder.ivpic);
+        Picasso.with(context).load(movieList.get(position).getImage()).transform(new RoundedImageView()).into(holder.ivpic);
 
         holder.llitem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(context, "Clicked at: " + position, Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(context, Deatils.class);
 
+                Intent intent = new Intent(context, Deatils.class);
+                intent.putExtra("datalist",movieList.get(position));
                 context.startActivity(intent);
+
+                /*Dialog dialog = new Dialog(context);
+                dialog.setContentView(R.layout.activity_deatils);
+
+                tvname = (TextView) dialog.findViewById(R.id.tvname);
+                tvcountry = (TextView) dialog.findViewById(R.id.tvcountry);
+                tvheight = (TextView) dialog.findViewById(R.id.tvheight);
+                tvdesc = (TextView) dialog.findViewById(R.id.tvDesc);
+                ivimage = (ImageView) dialog.findViewById(R.id.ivimage);
+
+                tvname.setText(movieList.get(position).getName());
+                tvcountry.setText(movieList.get(position).getCountry());
+                tvheight.setText(movieList.get(position).getHeight());
+                tvdesc.setText(movieList.get(position).getDescription());
+
+                Picasso.with(context).load(movieList.get(position).getImage()).transform(new RoundedImageView()).into(ivimage);
+
+                dialog.show();*/
+
             }
         });
     }
