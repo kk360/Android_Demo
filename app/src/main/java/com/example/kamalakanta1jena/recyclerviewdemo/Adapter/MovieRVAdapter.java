@@ -74,11 +74,7 @@ public class MovieRVAdapter extends RecyclerView.Adapter<MovieRVAdapter.ViewHold
             @Override
             public void onClick(View view) {
 
-                Intent intent = new Intent(context, Deatils.class);
-                intent.putExtra("datalist",movieList.get(position));
-                context.startActivity(intent);
-
-                /*Dialog dialog = new Dialog(context);
+                Dialog dialog = new Dialog(context);
                 dialog.setContentView(R.layout.activity_deatils);
 
                 tvname = (TextView) dialog.findViewById(R.id.tvname);
@@ -94,7 +90,7 @@ public class MovieRVAdapter extends RecyclerView.Adapter<MovieRVAdapter.ViewHold
 
                 Picasso.with(context).load(movieList.get(position).getImage()).transform(new RoundedImageView()).into(ivimage);
 
-                dialog.show();*/
+                dialog.show();
 
             }
         });
