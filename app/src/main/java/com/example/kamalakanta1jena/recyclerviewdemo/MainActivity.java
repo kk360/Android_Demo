@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     //http://microblogging.wingnity.com/JSONParsingTutorial/jsonActors
     private static final String URL = "http://microblogging.wingnity.com/JSONParsingTutorial/jsonActors";
 
-    private List<Actor> movieList;
+    private static List<Actor> movieList;
     APIInterface apiInterface;
 
     @Override
@@ -71,7 +71,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        movieList = new ArrayList<>();
 
         loaddataviaRetrofit();
 
@@ -89,10 +88,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onResponse(Call<Movie> call, retrofit2.Response<Movie> response) {
 
-                List<Actor> actors =  response.body().getActors();
-                Log.d("TEST", "Number of movies received: " + actors.size());
+                movieList =  response.body().getActors();
+                Log.d("TEST", "Number of movies received: " + movieList.size());
                 progressDialog.dismiss();
-                adapter = new MovieRVAdapter(actors, MainActivity.this);
+                adapter = new MovieRVAdapter(movieList, MainActivity.this);
                 recyclerView.setAdapter(adapter);
             }
 
